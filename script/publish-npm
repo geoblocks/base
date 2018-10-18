@@ -1,0 +1,29 @@
+#!/bin/bash -e
+
+PACKAGE_VERSION=`grep "\"version\"" package.json | cut -d\" -f4`
+echo "Trying to publish tag $TRAVIS_TAG from package $PACKAGE_VERSION"
+
+if [[ $@ =~ "--dry-run" ]]; then RUN="echo "; fi
+
+if [ -n "$TRAVIS_TAG"  ]
+then
+    echo "The tag $TRAVIS_TAG should be published to npm"
+    if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+-[a-z]+\.[0-9]+$ ]]
+    then
+        echo "This is a dev version"
+        export TAG="--tag version-$(echo $TRAVIS_TAG | awk -F[.-] '{print $4}')"
+    else
+        if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
+        then
+            echo "This is a regular version"
+        else
+            echo "This is not a regular version"
+        fi
+    fi
+    if [ "$PACKAGE_VERSION" = "$TRAVIS_TAG" ]
+    then
+        $RUN npm publish $TAG
+    else
+        echo "Skipping publication, the Travis tag and package version differ"
+    fi
+fi
