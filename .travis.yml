@@ -18,6 +18,7 @@ script:
   - echo "email = stephane.brunner@camptocamp.com" >> ~/.npmrc
   - npm config list
   - npm whoami
+  - npm publish --access=public
   - echo "strict-ssl = false" >> ~/.npmrc
   - npm whoami
   - cat ~/.npmrc
