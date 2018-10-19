@@ -1,34 +1,48 @@
-#!/bin/bash -e
+#!/usr/bin/env python3
 
-PACKAGE_VERSION=`grep "\"version\"" package.json | cut -d\" -f4`
-echo "Trying to publish tag $TRAVIS_TAG from package $PACKAGE_VERSION"
+import argparse
+import json
+import os
+import re
+import subprocess
 
-if [[ $@ =~ "--dry-run" ]]; then RUN="echo "; fi
+parser = argparse.ArgumentParser(description='Publis the package on npmjs.')
+parser.add_argument('--dry-run', action='store_true', help='Dry run mode')
+parser.add_argument('--force', action='store_true', help='Force to create the ~/.npmrc file')
+args = parser.parse_args()
 
-if [ -n "$TRAVIS_TAG"  ]
-then
-    echo "The tag $TRAVIS_TAG should be published to npm"
-    if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+-[a-z]+\.[0-9]+$ ]]
-    then
-        echo "This is a dev version"
-        export TAG="--tag version-$(echo $TRAVIS_TAG | awk -F[.-] '{print $4}')"
-    else
-        if [[ $TRAVIS_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]
-        then
-            echo "This is a regular version"
-        else
-            echo "This is not a regular version"
-        fi
-    fi
-    if [ "$PACKAGE_VERSION" = "$TRAVIS_TAG" ]
-    then
-        if [ ! -e ~/.npmrc ]
-        then
-            echo "_auth = ${NPM_AUTH}" > ~/.npmrc
-            echo "email = stephane.brunner@camptocamp.com" >> ~/.npmrc
-        fi
-        $RUN npm publish --access public $TAG
-    else
-        echo "Skipping publication, the Travis tag and package version differ"
-    fi
-fi
+def call(cmd):
+    if args.dry_run:
+        print(' '.join(cmd))
+    else:
+        subprocess.check_call(cmd)
+
+
+with open('package.json') as package_json:
+    PACKAGE_VERSION = json.loads(package_json.read())['version']
+
+if 'TRAVIS_TAG' in os.environ:
+    TRAVIS_TAG = os.environ['TRAVIS_TAG']
+    print('Trying to publish tag {} from package {}'.format(TRAVIS_TAG, PACKAGE_VERSION))
+
+    cmd = ['npm', 'publish', '--access=public']
+    if re.match('^[0-9]+\.[0-9]+\.[0-9]+-[a-z]+\.[0-9]+$', TRAVIS_TAG):
+        print('This is a dev version')
+        cmd.append('--tab=' + re.split('[.-]', TRAVIS_TAG)[3])
+    else:
+        if re.match('^[0-9]+\.[0-9]+\.[0-9]+$', TRAVIS_TAG):
+            print('This is a regular version')
+        else:
+            print('This is not a regular version')
+
+    if PACKAGE_VERSION == TRAVIS_TAG:
+        npmrc = os.path.expanduser('~/.npmrc')
+        if args.force or not os.path.exists(npmrc):
+            with open(npmrc, 'w') as npmrc_file:
+                npmrc_file.write("""
+_auth = {}
+email = stephane.brunner@camptocamp.com
+""".format(os.environ[NPM_AUTH]))
+        call(cmd)
+    else:
+        print('Skipping publication, the Travis tag and package version differ')
