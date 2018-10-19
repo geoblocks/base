@@ -42,7 +42,7 @@ if 'TRAVIS_TAG' in os.environ:
                 npmrc_file.write("""
 _auth = {}
 email = stephane.brunner@camptocamp.com
-""".format(os.environ[NPM_AUTH]))
+""".format(os.environ['NPM_AUTH']))
         call(cmd)
     else:
         print('Skipping publication, the Travis tag and package version differ')
