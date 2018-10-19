@@ -47,7 +47,8 @@ email = stephane.brunner@camptocamp.com
 
         if args.src:
             call(['cp', 'package.json', 'src'])
-
-        call(cmd, cwd='src')
+            call(cmd, cwd='src')
+        else:
+            call(cmd)
     else:
         print('Skipping publication, the Travis tag and package version differ')
