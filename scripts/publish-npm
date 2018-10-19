@@ -25,6 +25,7 @@ then
         if [ ! -e ~/.npmrc ]
         then
             echo "_auth = ${NPM_AUTH}" > ~/.npmrc
+            echo "email = stephane.brunner@camptocamp.com" >> ~/.npmrc
         fi
         $RUN npm publish $TAG
     else
