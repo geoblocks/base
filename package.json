@@ -10,7 +10,14 @@
     "doc": "typedoc --out dist/api --theme minimal --readme none --hideGenerator --listInvalidSymbolLinks --toc none"
   },
   "author": "info@camptocamp.com",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/geoblocks/base.git"
+  },
   "license": "bsd",
+  "bugs": {
+    "url": "https://github.com/geoblocks/base/issues"
+  },
   "devDependencies": {
     "eslint": "5.3.0",
     "eslint-config-openlayers": "11.0.0",
