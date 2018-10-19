@@ -21,6 +21,6 @@ script:
 deploy:
   - provider: script
     skip_cleanup: true
-    script: scripts/publish-npm --force
+    script: scripts/publish-npm --force --no-src
     on:
       tags: true

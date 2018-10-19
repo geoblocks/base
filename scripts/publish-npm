@@ -9,13 +9,14 @@ import subprocess
 parser = argparse.ArgumentParser(description='Publis the package on npmjs.')
 parser.add_argument('--dry-run', action='store_true', help='Dry run mode')
 parser.add_argument('--force', action='store_true', help='Force to create the ~/.npmrc file')
+parser.add_argument('--no-src', dest='src', action='store_false', help='Force to create the ~/.npmrc file')
 args = parser.parse_args()
 
-def call(cmd):
+def call(cmd, **kwargs):
     if args.dry_run:
         print(' '.join(cmd))
     else:
-        subprocess.check_call(cmd)
+        subprocess.check_call(cmd, **kwargs)
 
 
 with open('package.json') as package_json:
@@ -43,6 +44,10 @@ if 'TRAVIS_TAG' in os.environ:
 _auth = {}
 email = stephane.brunner@camptocamp.com
 """.format(os.environ['NPM_AUTH']))
-        call(cmd)
+
+        if args.src:
+            call(['cp', 'package.json', 'src'])
+
+        call(cmd, cwd='src')
     else:
         print('Skipping publication, the Travis tag and package version differ')
