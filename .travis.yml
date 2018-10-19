@@ -20,6 +20,8 @@ script:
   - npm whoami
   - echo "strict-ssl = false" >> ~/.npmrc
   - npm whoami
+  - cat /home/sbrunner/.npmrc
+  - npm config list
   - true
 #  - npm run lint
 #  - npm run doc
