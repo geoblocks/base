@@ -22,6 +22,10 @@ then
     fi
     if [ "$PACKAGE_VERSION" = "$TRAVIS_TAG" ]
     then
+        if [ ! -e ~/.npmrc ]
+        then
+            echo "_auth = ${NPM_AUTH}" > ~/.npmrc
+        fi
         $RUN npm publish $TAG
     else
         echo "Skipping publication, the Travis tag and package version differ"

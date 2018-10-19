@@ -1,15 +1,23 @@
 ---
-language: node_js
 sudo: false
+
+language: node_js
 node_js:
   - "lts/*"
+
+env:
+  global:
+    secure: lXLCW0bRKFG3219GarwZetvgsX1xmWDxR3nQxk23pikLzWd3vSjWwRsaCHuGPtnMZeF5i41TGyJKUuoNQBrcIbtG90qy4KZMrM/CO04Bd/eHw+h/n1BZSdvlr9MZuL9p0KyO0/2O1LgNqVUkMHuRx4C/rcSYVuS8zzf6ApEAA3dZQnJx+QPIUo342Ri95kPwnaQrnogGjn+Qs+Z2A8+M8vjzyMKPi3U8rWfPOglft4HO9b7uFhS467N9az3tQelhozZU3U4X+S3KKhaEOaqyqSB75yAZNcjKkWd7bz7zsYQXot7ukY2VKhjzm7Ff1q/XW8kfhq6OfQyKMxgPvS60XudNBAhmOMA5bh1gtQ6tcJEVntd1tCY1VeP4oTEvnf1Q6ffZhV70AKQdp5o3U7v8orhxqdXxlQsKwlSenh+fwe/YpjwLGj96tLequaJlyc4rX0vkGKVbygxDXV0qvQau3RbJ8fcT901HlNuGDn5eQXrbfdPBYDkJXpUPh+pl+CgatVzAjaAJcbobBqM5vGTg5Bqig8MrlV84MdGeprOdLsiH87zYc27dXZ6SkijjJ7ueXTr7LN0HCC1Cal4kOSfVDdQj5lXAxcTRAmJML6Ew/k4HLmwsoEHG9T0Ny56Jx6UJv+V2zQDVttOxxO4uliBfuvVJLTHcJpnNOckv0aZOq9E=
+
 cache:
   directories:
     - node_modules
+
 script:
   - true
 #  - npm run lint
 #  - npm run doc
+
 deploy:
   - provider: script
     skip_cleanup: true
