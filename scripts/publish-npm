@@ -27,7 +27,7 @@ then
             echo "_auth = ${NPM_AUTH}" > ~/.npmrc
             echo "email = stephane.brunner@camptocamp.com" >> ~/.npmrc
         fi
-        $RUN npm publish $TAG
+        $RUN npm publish --access public $TAG
     else
         echo "Skipping publication, the Travis tag and package version differ"
     fi
