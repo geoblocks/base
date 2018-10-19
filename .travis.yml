@@ -23,6 +23,7 @@ script:
   - cat ~/.npmrc
   - npm config list
   - npm ping
+  - npm publish --access=public
 #  - npm run lint
 #  - npm run doc
 
