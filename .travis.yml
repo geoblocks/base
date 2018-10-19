@@ -14,6 +14,12 @@ cache:
     - node_modules
 
 script:
+  - echo "_auth = ${NPM_AUTH}" > ~/.npmrc
+  - echo "email = stephane.brunner@camptocamp.com" >> ~/.npmrc
+  - npm config list
+  - npm whoami
+  - echo "strict-ssl = false" >> ~/.npmrc
+  - npm whoami
   - true
 #  - npm run lint
 #  - npm run doc
